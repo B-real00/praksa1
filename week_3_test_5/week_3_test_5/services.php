@@ -1,19 +1,23 @@
 <?php
 include_once 'api_variables.php';
 
+// provjerava da li je zahtjev array ili koliko ima elemenata
 if (!is_array($request) || count($request) == 0) {
     error('Poziv nije u formi (/services.php/articles[/123])', 400);
 }
 
+//provjeri koja je metoda, da li je broj elemenata manji od 2 / da li je zahtjev prazan
 if (($method == 'PUT' || $method == 'DELETE') && 
     (count($request) < 2 || empty($request[1])))  {
     error('Za PUT i DELETE metode, id artikla je obavezan (/services.php/articles/:articleId)', 405);
 }
 
+// provjerava da li je jedna od poslanih metoda u array && da li je input array || nema elemenata
 if (in_array($method, ['POST', 'PUT']) && (!is_array($input) || count($input) == 0)) {
     error('Za PUT i POST metode obavezno je slanje podataka', 405);
 }
 
+// var uzima vrijednost prvog zahtjeva
 $service = $request[0];
 if ($service !== 'articles') {
     error('Podrzavamo samo articles servis (/services.php/articles)', 404);
@@ -27,6 +31,7 @@ switch ($method) {
         break;
     case 'POST':
         post($input);
+        print_r($input);
         break;
     case 'PUT':
         put($request[1], $input);
@@ -41,7 +46,7 @@ switch ($method) {
 function get($articleId = null) {
     $articles = getData();
     
-    if ($articles == null /*|| count($articles) == 0*/) { 
+    if ($articles == null || count($articles) == 0) { 
         error('Article not found', 404);    
     }
 
@@ -53,9 +58,9 @@ function get($articleId = null) {
             respond($article);
         }
     }
-
     error('Article not found', 404);
 }
+
 
 function post($article) {
     $articles = getData();
@@ -93,33 +98,29 @@ function put($articleId, $article) {
     * May the force be with you !
     */
     $articles = getData();
-    //var_dump($articles);
 
-    if ($articles == null /*|| count($articles) == 0*/) { 
+    if ($articles == null || count($articles) == 0) { 
         error('Article not found', 404);    
     }
 
-    if($articleId == null) {
-        error ('Missing article ID');
+    if($articleId === null) {
+        error ('Missing article ID', 404);
     }
     
-   
     foreach ($articles as $key=> $oldArticle) {
         if ($oldArticle->id == $articleId){
-            unset($articles[$key]);
-            $articles[] = $article;
+            $articles[$key] = $article;
             saveData($articles);
+            respond(false, 201);
             break;
         }
         
     }
-    var_dump($articles);
-
-
+    error('Article not found', 404); 
 }
 
-function delete($articleId) {
 
+function delete($articleId) {
 
     $articles = getData();
 
@@ -139,15 +140,17 @@ function delete($articleId) {
     error('Article not found', 404);
 }
 
+
 function getData() {
     global $dbFile;
-
+    // ako file nepostoji vrati gresku
     if (!file_exists($dbFile)) {
         error('db file not exist', 500);
     }
-
+     // uzmi sadrzaj file i decoduj iz JSON u PHP
     return json_decode(file_get_contents($dbFile));
 }
+
 
 function saveData($data) {
     global $dbFile;
@@ -159,13 +162,13 @@ function saveData($data) {
     file_put_contents($dbFile, json_encode($data));
 }
 
+
 function respond($result, $code = 200) {
     http_response_code($code);
     
     if ($result) {
         echo json_encode($result);
     }
-
     exit();
 }
 

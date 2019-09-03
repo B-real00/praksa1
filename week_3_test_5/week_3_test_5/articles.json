@@ -1,1 +1,6 @@
-{"0":{"title":"Some new article","body":"Some article's body","link":"http:\/\/somearticlelink.com","id":122},"2":{"title":"Some new article","body":"Some article's body","link":"http:\/\/somearticlelink.com","id":125},"3":{"title":"Some new article","body":"Some article's body","link":"http:\/\/somearticlelink.com","id":126},"4":{"id":1234567,"title":"testting title","body":"body","link":"link"}}
+[ 
+    {"title":"Some new article","body":"Some article's body","link":"http:\/\/somearticlelink.com","id":122},
+    {"title":"Some new article","body":"Some article's body","link":"http:\/\/somearticlelink.com","id":125},
+    {"title":"Some new article","body":"Some article's body","link":"http:\/\/somearticlelink.com","id":126},
+    {"title":"testting title","body":"body","link":"link", "id":123}
+]
