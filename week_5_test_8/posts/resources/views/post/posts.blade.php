@@ -1,19 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>POSTs</title>
-</head>
+@extends('layouts.master')
+
+@section('styles')
 <style>
 body {
-    background-color: #fff;
-    color: #636b6f;
-    font-family: 'Nunito', sans-serif;
-    font-weight: 200;
-    height: 100vh;
-    margin: 0;
+    margin-left: 0 !important; 
+    margin-top: 0 !important;
 }
 table {
     width:100%;
@@ -24,23 +15,14 @@ tr {
 th, td {
   padding: 15px;
   border-bottom: 1px solid #ddd;
-}
-button {
-  background-color: grey; /* Green */
-  border: none;
-  color: white;
-  padding: 13px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 13px;
-  margin: 4px 2px;
-  cursor: pointer;
-  border-radius: 9px;
-}
-            
+}         
 </style>
-<body>
+@endsection
+
+
+@section('title', 'POSTS')
+
+@section('content')
 
 <table>
     <caption><h1>Comments</h1></caption>
@@ -85,5 +67,5 @@ button {
     </table>
 
     <a href="posts/create"><button>Add new Comment</button></a>
-</body>
-</html>
+@endsection
+
